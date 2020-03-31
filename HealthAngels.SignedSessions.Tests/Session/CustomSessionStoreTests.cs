@@ -14,7 +14,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
 
         public CustomSessionStoreTests()
         {
-            var mockCustomRedisCache = new Mock<IDistributedCache>();
+            var mockCustomRedisCache = new Mock<CustomRedisCache>();
             var mockLoggerFactory = new Mock<ILoggerFactory>();
             _customSessionStore = new CustomSessionStore(mockCustomRedisCache.Object, mockLoggerFactory.Object);
         }
