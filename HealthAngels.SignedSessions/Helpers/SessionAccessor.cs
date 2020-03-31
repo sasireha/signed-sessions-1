@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace PGO.Identity.SignedSessions.Helpers
+namespace HealthAngels.SignedSessions.Helpers
 {
     public class SessionAccessor : ISessionAccessor
     {

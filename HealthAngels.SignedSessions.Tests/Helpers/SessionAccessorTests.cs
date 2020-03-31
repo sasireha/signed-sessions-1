@@ -3,10 +3,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Moq;
-using PGO.Identity.SignedSessions.Helpers;
+using HealthAngels.SignedSessions.Helpers;
 using Xunit;
 
-namespace PGO.Identity.SignedSessions.Tests.Helpers
+namespace HealthAngels.SignedSessions.Tests.Helpers
 {
     public class SessionAccessorTests
     {

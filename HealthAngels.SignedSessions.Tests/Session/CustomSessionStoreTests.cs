@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PGO.Identity.SignedSessions.Session;
+using HealthAngels.SignedSessions.Session;
 using Xunit;
 
-namespace PGO.Identity.SignedSessions.Tests.Session
+namespace HealthAngels.SignedSessions.Tests.Session
 {
     public class CustomSessionStoreTests
     {

@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
-using PGO.Identity.SignedSessions.Signature;
+using HealthAngels.SignedSessions.Signature;
 
-namespace PGO.Identity.SignedSessions.Session
+namespace HealthAngels.SignedSessions.Session
 {
     public class CustomRedisCache : IDistributedCache
     {
