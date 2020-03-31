@@ -8,6 +8,7 @@
         <StartupObject />
         <ApplicationIcon />
         <OutputType>Library</OutputType>
+        <Description>This package will sign and store the session data in Redis</Description>
     </PropertyGroup>
 
     <ItemGroup>
