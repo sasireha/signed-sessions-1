@@ -13,6 +13,8 @@ namespace HealthAngels.SignedSessions.Session
         private readonly IDistributedCache _cache;
         private readonly ISignatureHelper _signatureHelper;
 
+        public CustomRedisCache()
+        { }
         public CustomRedisCache(IDistributedCache cache, ISignatureHelper signatureHelper)
         {
             _cache = cache;
