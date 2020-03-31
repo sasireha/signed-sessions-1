@@ -3,11 +3,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Moq;
-using PGO.Identity.SignedSessions.Session;
-using PGO.Identity.SignedSessions.Signature;
+using HealthAngels.SignedSessions.Session;
+using HealthAngels.SignedSessions.Signature;
 using Xunit;
 
-namespace PGO.Identity.SignedSessions.Tests.Session
+namespace HealthAngels.SignedSessions.Tests.Session
 {
      public class CustomRedisCacheTests
     {

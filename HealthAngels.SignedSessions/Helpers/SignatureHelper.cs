@@ -2,9 +2,9 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using PGO.Identity.SignedSessions.Session;
+using HealthAngels.SignedSessions.Session;
 
-namespace PGO.Identity.SignedSessions.Signature
+namespace HealthAngels.SignedSessions.Signature
 {
     public class SignatureHelper : ISignatureHelper
     {

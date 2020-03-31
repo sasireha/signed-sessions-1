@@ -2,6 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageId>HealthAngels.SignedSessions</PackageId>
+        <Product>HealthAngels.SignedSessions</Product>
+        <Authors>Health Angels</Authors>
+        <StartupObject />
+        <ApplicationIcon />
+        <OutputType>Library</OutputType>
     </PropertyGroup>
 
     <ItemGroup>

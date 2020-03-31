@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Extensions.Options;
 using Moq;
-using PGO.Identity.SignedSessions.Session;
-using PGO.Identity.SignedSessions.Signature;
+using HealthAngels.SignedSessions.Session;
+using HealthAngels.SignedSessions.Signature;
 using Xunit;
 
-namespace PGO.Identity.SignedSessions.Tests.Helpers
+namespace HealthAngels.SignedSessions.Tests.Helpers
 {
     public class SignatureHelperTests
     {

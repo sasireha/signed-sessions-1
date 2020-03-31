@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
-namespace PGO.Identity.SignedSessions.Session
+namespace HealthAngels.SignedSessions.Session
 {
     public class CustomSessionStore : ISessionStore
     {

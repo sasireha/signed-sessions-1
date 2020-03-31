@@ -1,4 +1,4 @@
-﻿namespace PGO.Identity.SignedSessions.Session
+﻿namespace HealthAngels.SignedSessions.Session
 {
     public class SessionConfig
     {

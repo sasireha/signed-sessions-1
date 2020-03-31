@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.DependencyInjection;
-using PGO.Identity.SignedSessions.Session;
-using PGO.Identity.SignedSessions.Signature;
+using HealthAngels.SignedSessions.Session;
+using HealthAngels.SignedSessions.Signature;
 
-namespace PGO.Identity.SignedSessions
+namespace HealthAngels.SignedSessions
 {
     public static class IServiceCollectionExtension
     {

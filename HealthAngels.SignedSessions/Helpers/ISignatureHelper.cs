@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace PGO.Identity.SignedSessions.Signature
+namespace HealthAngels.SignedSessions.Signature
 {
     public interface ISignatureHelper
     {

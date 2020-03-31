@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
-namespace PGO.Identity.SignedSessions.Session
+namespace HealthAngels.SignedSessions.Session
 {
     //The default session provider in ASP.NET Core loads session records synchronously from the underlying IDistributedCache backing store. Inorder to load asynchronously the ISession.LoadAsync method should be explicitly called.
     //This class enforces this pattern. reference: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-3.1
