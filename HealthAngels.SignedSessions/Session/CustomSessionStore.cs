@@ -11,7 +11,7 @@ namespace HealthAngels.SignedSessions.Session
         private readonly IDistributedCache _cache;
         private readonly ILoggerFactory _loggerFactory;
 
-        public CustomSessionStore(CustomRedisCache cache, ILoggerFactory loggerFactory)
+        public CustomSessionStore(ICustomRedisCache cache, ILoggerFactory loggerFactory)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _loggerFactory = loggerFactory;
