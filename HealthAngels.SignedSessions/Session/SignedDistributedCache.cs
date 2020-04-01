@@ -8,14 +8,14 @@ using HealthAngels.SignedSessions.Signature;
 
 namespace HealthAngels.SignedSessions.Session
 {
-    public class CustomRedisCache : ICustomRedisCache
+    public class SignedDistributedCache : ISignedDistributedCache
     {
         private readonly IDistributedCache _cache;
         private readonly ISignatureHelper _signatureHelper;
 
-        public CustomRedisCache()
+        public SignedDistributedCache()
         { }
-        public CustomRedisCache(IDistributedCache cache, ISignatureHelper signatureHelper)
+        public SignedDistributedCache(IDistributedCache cache, ISignatureHelper signatureHelper)
         {
             _cache = cache;
             _signatureHelper = signatureHelper;

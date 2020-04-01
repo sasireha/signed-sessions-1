@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HealthAngels.SignedSessions.Session
 {
-    public interface ICustomRedisCache:IDistributedCache
+    public interface ISignedDistributedCache:IDistributedCache
     {
     }
 }

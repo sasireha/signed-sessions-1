@@ -9,12 +9,12 @@ using Xunit;
 
 namespace HealthAngels.SignedSessions.Tests.Session
 {
-     public class CustomRedisCacheTests
+     public class SignedDistributedCacheTests
     {
         private Mock<IDistributedCache> _baseCacheMock;
         private Mock<ISignatureHelper> _signatureHelper;
 
-        private readonly CustomRedisCache _customCache;
+        private readonly SignedDistributedCache _customCache;
         private string sessionKey = Guid.NewGuid().ToString();
         private const string unsignedValue = "dGVzdHZhbHVl"; // must be base64 encoded
         private const string signature = "tCSsoVusDeFis9E5QEtDXSsoOrnqiPQeheDXkkVkQv0="; // must be base64 encoded
@@ -22,11 +22,11 @@ namespace HealthAngels.SignedSessions.Tests.Session
         private byte[] sessionData = Encoding.UTF8.GetBytes("test session data");
         private byte[] signedSessionData = Encoding.UTF8.GetBytes(unsignedValue + "." + signature);
 
-        public CustomRedisCacheTests()
+        public SignedDistributedCacheTests()
         {
             _baseCacheMock = new Mock<IDistributedCache>();
             _signatureHelper = new Mock<ISignatureHelper>();
-            _customCache = new CustomRedisCache(_baseCacheMock.Object, _signatureHelper.Object);
+            _customCache = new SignedDistributedCache(_baseCacheMock.Object, _signatureHelper.Object);
         }
 
         [Fact]
