@@ -6,12 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace HealthAngels.SignedSessions.Session
 {
-    public class CustomSessionStore : ISessionStore
+    public class SignedSessionStore : ISessionStore
     {
         private readonly IDistributedCache _cache;
         private readonly ILoggerFactory _loggerFactory;
 
-        public CustomSessionStore(IDistributedCache cache, ILoggerFactory loggerFactory)
+        public SignedSessionStore(ISignedDistributedCache cache, ILoggerFactory loggerFactory)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _loggerFactory = loggerFactory;

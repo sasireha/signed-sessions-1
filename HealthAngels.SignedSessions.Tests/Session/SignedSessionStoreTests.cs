@@ -8,15 +8,15 @@ using Xunit;
 
 namespace HealthAngels.SignedSessions.Tests.Session
 {
-    public class CustomSessionStoreTests
+    public class SignedSessionStoreTests
     {
-        private readonly CustomSessionStore _customSessionStore;
+        private readonly SignedSessionStore _customSessionStore;
 
-        public CustomSessionStoreTests()
+        public SignedSessionStoreTests()
         {
-            var mockCustomRedisCache = new Mock<IDistributedCache>();
+            var mockCustomRedisCache = new Mock<ISignedDistributedCache>();
             var mockLoggerFactory = new Mock<ILoggerFactory>();
-            _customSessionStore = new CustomSessionStore(mockCustomRedisCache.Object, mockLoggerFactory.Object);
+            _customSessionStore = new SignedSessionStore(mockCustomRedisCache.Object, mockLoggerFactory.Object);
         }
 
         [Fact]

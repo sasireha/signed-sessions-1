@@ -34,9 +34,9 @@ namespace HealthAngels.SignedSessions
 
         private static void ConfigureDependencies(IServiceCollection services)
         {
-            services.AddSingleton<CustomRedisCache>();
+            services.AddSingleton<ISignedDistributedCache,SignedDistributedCache>();
             services.AddSingleton<ISignatureHelper, SignatureHelper>();
-            services.AddTransient<ISessionStore, CustomSessionStore>();
+            services.AddTransient<ISessionStore, SignedSessionStore>();
         }
     }
 }
