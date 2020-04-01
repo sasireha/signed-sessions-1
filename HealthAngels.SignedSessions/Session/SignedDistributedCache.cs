@@ -12,9 +12,7 @@ namespace HealthAngels.SignedSessions.Session
     {
         private readonly IDistributedCache _cache;
         private readonly ISignatureHelper _signatureHelper;
-
-        public SignedDistributedCache()
-        { }
+                
         public SignedDistributedCache(IDistributedCache cache, ISignatureHelper signatureHelper)
         {
             _cache = cache;
