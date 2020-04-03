@@ -2,9 +2,8 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using HealthAngels.SignedSessions.Session;
 
-namespace HealthAngels.SignedSessions.Signature
+namespace HealthAngels.SignedSessions.Helpers
 {
     public class SignatureHelper : ISignatureHelper
     {

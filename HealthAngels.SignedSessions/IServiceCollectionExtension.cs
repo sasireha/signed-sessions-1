@@ -1,9 +1,10 @@
 ﻿using System;
+using HealthAngels.SignedSessions.Cache;
+using HealthAngels.SignedSessions.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.DependencyInjection;
 using HealthAngels.SignedSessions.Session;
-using HealthAngels.SignedSessions.Signature;
 
 namespace HealthAngels.SignedSessions
 {

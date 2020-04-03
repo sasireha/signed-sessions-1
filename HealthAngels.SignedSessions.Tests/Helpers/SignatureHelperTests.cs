@@ -1,8 +1,7 @@
 ﻿using System;
+using HealthAngels.SignedSessions.Helpers;
 using Microsoft.Extensions.Options;
 using Moq;
-using HealthAngels.SignedSessions.Session;
-using HealthAngels.SignedSessions.Signature;
 using Xunit;
 
 namespace HealthAngels.SignedSessions.Tests.Helpers
@@ -11,7 +10,7 @@ namespace HealthAngels.SignedSessions.Tests.Helpers
     {
         const string secretKey = "89DF83B0-0337-467E-A111-B041472C4EC8";
         private ISignatureHelper signatureHelper;
-        byte[] sessionValue = System.Text.Encoding.UTF8.GetBytes("testvalue");
+        byte[] actualValue = System.Text.Encoding.UTF8.GetBytes("testvalue");
         public SignatureHelperTests()
         {
             var signatureSecrets = new SignatureSecrets { HmacSecretKey = secretKey };
@@ -39,7 +38,7 @@ namespace HealthAngels.SignedSessions.Tests.Helpers
             string signature = "";
 
             //Act
-            signature = signatureHelper.CreateSignature(sessionValue);
+            signature = signatureHelper.CreateSignature(actualValue);
 
             //Assert
             Assert.NotEmpty(signature);
@@ -49,11 +48,11 @@ namespace HealthAngels.SignedSessions.Tests.Helpers
         public void VerifySignature_WithCorrectValue()
         {            
             //Arrange
-            string unsignedSessionData = Convert.ToBase64String(sessionValue);
-            string signedSessionData = signatureHelper.CreateSignature(sessionValue);
+            string unsignedEncodedValue = Convert.ToBase64String(actualValue);
+            string signature = signatureHelper.CreateSignature(actualValue);
 
             //Act
-            bool result = signatureHelper.VerifySignature(unsignedSessionData, signedSessionData);
+            bool result = signatureHelper.VerifySignature(unsignedEncodedValue, signature);
 
             //Assert
             Assert.True(result);
@@ -63,12 +62,11 @@ namespace HealthAngels.SignedSessions.Tests.Helpers
         public void VerifySignature_WithTamperedValue()
         {
             //Arrange
-            string tamperedSessionData = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("testvalue1"));
-            string signedSessionData = signatureHelper.CreateSignature(sessionValue);
-            string dataInRedis = tamperedSessionData + "." + signedSessionData;
+            string tamperedValue = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("testvalue1"));
+            string signature = signatureHelper.CreateSignature(actualValue);
 
             //Act
-            bool result = signatureHelper.VerifySignature(tamperedSessionData, signedSessionData);
+            bool result = signatureHelper.VerifySignature(tamperedValue, signature);
 
             //Assert
             Assert.False(result);

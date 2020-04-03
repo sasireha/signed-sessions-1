@@ -1,4 +1,4 @@
-﻿namespace HealthAngels.SignedSessions.Session
+﻿namespace HealthAngels.SignedSessions
 {
     public class SignatureSecrets
     {

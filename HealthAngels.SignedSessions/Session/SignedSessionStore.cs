@@ -1,4 +1,5 @@
 ﻿using System;
+using HealthAngels.SignedSessions.Cache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Distributed;
