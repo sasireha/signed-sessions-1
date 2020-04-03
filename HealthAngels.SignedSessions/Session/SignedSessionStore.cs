@@ -1,4 +1,5 @@
 ﻿using System;
+using HealthAngels.SignedSessions.Cache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Distributed;
@@ -29,7 +30,7 @@ namespace HealthAngels.SignedSessions.Session
                 throw new ArgumentNullException(nameof(tryEstablishSession));
             }
 
-            return new CustomDistributedSession(_cache, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, _loggerFactory, isNewSessionKey);
+            return new SignedDistributedSession(_cache, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, _loggerFactory, isNewSessionKey);
         }
     }
 }

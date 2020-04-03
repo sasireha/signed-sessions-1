@@ -3,10 +3,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HealthAngels.SignedSessions.Helpers;
 using Microsoft.Extensions.Caching.Distributed;
-using HealthAngels.SignedSessions.Signature;
 
-namespace HealthAngels.SignedSessions.Session
+namespace HealthAngels.SignedSessions.Cache
 {
     public class SignedDistributedCache : ISignedDistributedCache
     {
@@ -21,24 +21,24 @@ namespace HealthAngels.SignedSessions.Session
 
         public async Task<byte[]> GetAsync(string key, CancellationToken token = default)
         {
-            var sessionData = await _cache.GetAsync(key, token);
-            if (sessionData == null || sessionData.Length == 0)
+            var value = await _cache.GetAsync(key, token);
+            if (value == null || value.Length == 0)
             {
-                return sessionData;
+                return value;
             }
           
-            var signedValue = Encoding.UTF8.GetString(sessionData).Split(".");
-            var encodedValue = signedValue.First();
+            var signedValue = Encoding.UTF8.GetString(value).Split(".");
+            var unsignedEncodedValue = signedValue.First();
             var signature = signedValue.Last();
             
-            var signatureIsValid = _signatureHelper.VerifySignature(encodedValue, signature);
+            var signatureIsValid = _signatureHelper.VerifySignature(unsignedEncodedValue, signature);
 
             if (!signatureIsValid)
             {
                 throw new Exception("Session Signature is invalid");
             }
             
-            return Convert.FromBase64String(encodedValue);
+            return Convert.FromBase64String(unsignedEncodedValue);
         }
 
         public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default)
@@ -50,8 +50,8 @@ namespace HealthAngels.SignedSessions.Session
             }
             
             var signature = _signatureHelper.CreateSignature(value);
-            var encodedActualValue = Convert.ToBase64String(value);
-            var signedValue = Encoding.UTF8.GetBytes(encodedActualValue + "." + signature);
+            var unsignedEncodedValue = Convert.ToBase64String(value);
+            var signedValue = Encoding.UTF8.GetBytes(unsignedEncodedValue + "." + signature);
             await _cache.SetAsync(key, signedValue, options, token);
         }
 

@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace HealthAngels.SignedSessions.Session
+namespace HealthAngels.SignedSessions.Cache
 {
     public interface ISignedDistributedCache:IDistributedCache
     {

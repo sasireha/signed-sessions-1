@@ -2,19 +2,18 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using HealthAngels.SignedSessions.Session;
 
-namespace HealthAngels.SignedSessions.Signature
+namespace HealthAngels.SignedSessions.Helpers
 {
     public class SignatureHelper : ISignatureHelper
     {
         public Encoding Encoding => Encoding.UTF8;
 
-        private readonly SessionConfig _sessionConfig;
+        private readonly SignatureSecrets _signatureSecrets;
 
-        public SignatureHelper(IOptions<SessionConfig> sessionConfig)
+        public SignatureHelper(IOptions<SignatureSecrets> signatureSecrets)
         {
-            _sessionConfig = sessionConfig.Value;
+            _signatureSecrets = signatureSecrets.Value;
         }
 
         public string CreateSignature(byte[] message)
@@ -22,7 +21,7 @@ namespace HealthAngels.SignedSessions.Signature
             if (message == null)
                 return string.Empty;
 
-            byte[] keyByte = Encoding.GetBytes(_sessionConfig.HmacSecretKey);
+            byte[] keyByte = Encoding.GetBytes(_signatureSecrets.HmacSecretKey);
             using (var hmacsha256 = new HMACSHA256(keyByte))
             {
                 byte[] hashmessage = hmacsha256.ComputeHash(message);

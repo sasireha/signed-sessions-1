@@ -1,17 +1,18 @@
 ﻿using System;
+using HealthAngels.SignedSessions.Cache;
+using HealthAngels.SignedSessions.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.DependencyInjection;
 using HealthAngels.SignedSessions.Session;
-using HealthAngels.SignedSessions.Signature;
 
 namespace HealthAngels.SignedSessions
 {
     public static class IServiceCollectionExtension
     {
-        public static IServiceCollection AddSignedSessions(this IServiceCollection services, Action<SessionConfig> sessionConfig)
+        public static IServiceCollection AddSignedSessions(this IServiceCollection services, Action<SignatureSecrets> signatureSecrets)
         {
-            services.Configure(sessionConfig);
+            services.Configure(signatureSecrets);
             
             ConfigureDependencies(services);
         

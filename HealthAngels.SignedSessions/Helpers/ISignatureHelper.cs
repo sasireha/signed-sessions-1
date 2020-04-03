@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace HealthAngels.SignedSessions.Signature
+namespace HealthAngels.SignedSessions.Helpers
 {
     public interface ISignatureHelper
     {
