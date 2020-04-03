@@ -14,7 +14,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         private Mock<IDistributedCache> _baseCacheMock;
         private Mock<ISignatureHelper> _signatureHelper;
 
-        private readonly SignedDistributedCache _customCache;
+        private readonly SignedDistributedCache _signedDistributedCache;
         private string sessionKey = Guid.NewGuid().ToString();
         private const string unsignedValue = "dGVzdHZhbHVl"; // must be base64 encoded
         private const string signature = "tCSsoVusDeFis9E5QEtDXSsoOrnqiPQeheDXkkVkQv0="; // must be base64 encoded
@@ -26,7 +26,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         {
             _baseCacheMock = new Mock<IDistributedCache>();
             _signatureHelper = new Mock<ISignatureHelper>();
-            _customCache = new SignedDistributedCache(_baseCacheMock.Object, _signatureHelper.Object);
+            _signedDistributedCache = new SignedDistributedCache(_baseCacheMock.Object, _signatureHelper.Object);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
             _signatureHelper.Setup(m => m.VerifySignature(unsignedValue, signature)).Returns(true);
 
             //Act
-            var result = await _customCache.GetAsync(sessionKey);
+            var result = await _signedDistributedCache.GetAsync(sessionKey);
 
             // Assert
             Assert.Equal(Convert.FromBase64String(unsignedValue), result);
@@ -51,7 +51,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
             _signatureHelper.Setup(m => m.VerifySignature(unsignedValue, signature)).Returns(false);
 
             //Act
-            Exception exception = Assert.ThrowsAsync<Exception>(async () => await _customCache.GetAsync(sessionKey)).Result;
+            Exception exception = Assert.ThrowsAsync<Exception>(async () => await _signedDistributedCache.GetAsync(sessionKey)).Result;
 
             // Assert
             Assert.Equal("Session Signature is invalid", exception.Message);
@@ -66,7 +66,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
             _baseCacheMock.Setup(m => m.GetAsync(sessionKey, default)).ReturnsAsync(sessionData);
 
             //Act
-            var result = await _customCache.GetAsync(sessionKey);
+            var result = await _signedDistributedCache.GetAsync(sessionKey);
 
             // Assert
             Assert.Equal(sessionData, result);
@@ -80,7 +80,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
             _signatureHelper.Setup(m => m.CreateSignature(sessionData)).Returns(signature);
 
             // Act
-            await _customCache.SetAsync(sessionKey, sessionData, distributedCacheEntryOptions);
+            await _signedDistributedCache.SetAsync(sessionKey, sessionData, distributedCacheEntryOptions);
 
             // Assert
             _baseCacheMock.Verify(m => m.SetAsync(sessionKey, sessionDataWithSignature, distributedCacheEntryOptions, default), Times.Once);
@@ -90,7 +90,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public async Task SetSessionDataInRedisAsync_WhenSessionDataIsNull()
         {
             // Act
-            await _customCache.SetAsync(sessionKey, null, distributedCacheEntryOptions);
+            await _signedDistributedCache.SetAsync(sessionKey, null, distributedCacheEntryOptions);
 
             // Assert
             _baseCacheMock.Verify(m => m.SetAsync(sessionKey, null, distributedCacheEntryOptions, default), Times.Once);
@@ -100,7 +100,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public void GetSessionDataFromRedis()
         {
             //Act
-            var exception = Assert.Throws<NotImplementedException>(() => _customCache.Get(sessionKey));
+            var exception = Assert.Throws<NotImplementedException>(() => _signedDistributedCache.Get(sessionKey));
             //Assert
             Assert.IsType<NotImplementedException>(exception);
         }
@@ -109,7 +109,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public void RefreshDataInRedis()
         {
             //Act
-            var exception = Assert.Throws<NotImplementedException>(() => _customCache.Refresh(sessionKey));
+            var exception = Assert.Throws<NotImplementedException>(() => _signedDistributedCache.Refresh(sessionKey));
             //Assert
             Assert.IsType<NotImplementedException>(exception);
         }
@@ -118,7 +118,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public async Task RefreshDataInRedisAsync()
         {
             //Act
-            await _customCache.RefreshAsync(sessionKey, default);
+            await _signedDistributedCache.RefreshAsync(sessionKey, default);
             //Assert
             _baseCacheMock.Verify(m => m.RefreshAsync(sessionKey, default), Times.Once);
         }
@@ -127,7 +127,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public void RemoveDataInRedis()
         {
             //Act
-            var exception = Assert.Throws<NotImplementedException>(() => _customCache.Remove(sessionKey));
+            var exception = Assert.Throws<NotImplementedException>(() => _signedDistributedCache.Remove(sessionKey));
             //Assert
             Assert.IsType<NotImplementedException>(exception);
         }
@@ -136,7 +136,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public async Task RemoveDataInRedisAsync()
         {
             //Act
-            await _customCache.RemoveAsync(sessionKey, default);
+            await _signedDistributedCache.RemoveAsync(sessionKey, default);
             //Assert
             _baseCacheMock.Verify(m => m.RemoveAsync(sessionKey, default), Times.Once);
         }
@@ -145,7 +145,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public void SetDataInRedis()
         {
             //Act
-            var exception = Assert.Throws<NotImplementedException>(() => _customCache.Set(sessionKey, sessionData, distributedCacheEntryOptions));
+            var exception = Assert.Throws<NotImplementedException>(() => _signedDistributedCache.Set(sessionKey, sessionData, distributedCacheEntryOptions));
             //Assert
             Assert.IsType<NotImplementedException>(exception);
         }

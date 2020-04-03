@@ -9,9 +9,9 @@ namespace HealthAngels.SignedSessions
 {
     public static class IServiceCollectionExtension
     {
-        public static IServiceCollection AddSignedSessions(this IServiceCollection services, Action<SessionConfig> sessionConfig)
+        public static IServiceCollection AddSignedSessions(this IServiceCollection services, Action<SignatureSecrets> signatureSecrets)
         {
-            services.Configure(sessionConfig);
+            services.Configure(signatureSecrets);
             
             ConfigureDependencies(services);
         

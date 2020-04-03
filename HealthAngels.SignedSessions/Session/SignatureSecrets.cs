@@ -1,6 +1,6 @@
 ﻿namespace HealthAngels.SignedSessions.Session
 {
-    public class SessionConfig
+    public class SignatureSecrets
     {
         public string HmacSecretKey { get; set; }
     }

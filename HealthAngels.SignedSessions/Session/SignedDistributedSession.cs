@@ -10,9 +10,9 @@ namespace HealthAngels.SignedSessions.Session
 {
     //The default session provider in ASP.NET Core loads session records synchronously from the underlying IDistributedCache backing store. Inorder to load asynchronously the ISession.LoadAsync method should be explicitly called.
     //This class enforces this pattern. reference: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-3.1
-    public class CustomDistributedSession : DistributedSession, ISession
+    public class SignedDistributedSession : DistributedSession, ISession
     {
-        public CustomDistributedSession(IDistributedCache cache, string sessionKey, TimeSpan idleTimeout, TimeSpan ioTimeout,
+        public SignedDistributedSession(IDistributedCache cache, string sessionKey, TimeSpan idleTimeout, TimeSpan ioTimeout,
             Func<bool> tryEstablishSession, ILoggerFactory loggerFactory, bool isNewSessionKey) : base(cache, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, loggerFactory, isNewSessionKey)
         {
 

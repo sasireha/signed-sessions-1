@@ -14,10 +14,10 @@ namespace HealthAngels.SignedSessions.Tests.Helpers
         byte[] sessionValue = System.Text.Encoding.UTF8.GetBytes("testvalue");
         public SignatureHelperTests()
         {
-            var sessionConfig = new SessionConfig { HmacSecretKey = secretKey };
-            var sessionConfigOptions = new Mock<IOptions<SessionConfig>>();
-            sessionConfigOptions.Setup(m => m.Value).Returns(sessionConfig);
-            signatureHelper = new SignatureHelper(sessionConfigOptions.Object);
+            var signatureSecrets = new SignatureSecrets { HmacSecretKey = secretKey };
+            var signatureSecretsOptions = new Mock<IOptions<SignatureSecrets>>();
+            signatureSecretsOptions.Setup(m => m.Value).Returns(signatureSecrets);
+            signatureHelper = new SignatureHelper(signatureSecretsOptions.Object);
         }
 
 
