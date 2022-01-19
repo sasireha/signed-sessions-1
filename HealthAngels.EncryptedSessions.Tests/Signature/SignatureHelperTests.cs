@@ -1,10 +1,10 @@
-﻿using System;
-using HealthAngels.SignedSessions.Helpers;
+﻿using HealthAngels.EncryptedSessions.Signature;
 using Microsoft.Extensions.Options;
 using Moq;
+using System;
 using Xunit;
 
-namespace HealthAngels.SignedSessions.Tests.Helpers
+namespace HealthAngels.EncryptedSessions.Tests.Signature
 {
     public class SignatureHelperTests
     {

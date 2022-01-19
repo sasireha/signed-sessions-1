@@ -3,7 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace HealthAngels.SignedSessions.Helpers
+namespace HealthAngels.EncryptedSessions.Signature
 {
     public class SignatureHelper : ISignatureHelper
     {

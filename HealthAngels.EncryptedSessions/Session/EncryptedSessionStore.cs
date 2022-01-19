@@ -1,18 +1,18 @@
 ﻿using System;
-using HealthAngels.SignedSessions.Cache;
+using HealthAngels.EncryptedSessions.Cache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
-namespace HealthAngels.SignedSessions.Session
+namespace HealthAngels.EncryptedSessions.Session
 {
-    public class SignedSessionStore : ISessionStore
+    public class EncryptedSessionStore : ISessionStore
     {
         private readonly IDistributedCache _cache;
         private readonly ILoggerFactory _loggerFactory;
 
-        public SignedSessionStore(ISignedDistributedCache cache, ILoggerFactory loggerFactory)
+        public EncryptedSessionStore(IEncryptedDistributedCache cache, ILoggerFactory loggerFactory)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _loggerFactory = loggerFactory;
@@ -30,7 +30,7 @@ namespace HealthAngels.SignedSessions.Session
                 throw new ArgumentNullException(nameof(tryEstablishSession));
             }
 
-            return new SignedDistributedSession(_cache, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, _loggerFactory, isNewSessionKey);
+            return new EncryptedDistributedSession(_cache, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, _loggerFactory, isNewSessionKey);
         }
     }
 }

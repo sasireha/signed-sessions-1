@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HealthAngels.SignedSessions\HealthAngels.SignedSessions.csproj" />
+      <ProjectReference Include="..\HealthAngels.EncryptedSessions\HealthAngels.EncryptedSessions.csproj" />
     </ItemGroup>
 
 </Project>
