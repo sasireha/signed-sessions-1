@@ -19,7 +19,7 @@ jobs:
         dotnet-version: 3.1.101
         source-url: https://api.nuget.org/v3/index.json
       env: 
-        NUGET_AUTH_TOKEN: ${{secrets.nugetApiKey}}
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Install dependencies
       run: dotnet restore
