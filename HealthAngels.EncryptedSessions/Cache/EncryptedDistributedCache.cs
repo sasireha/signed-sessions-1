@@ -21,10 +21,10 @@ namespace HealthAngels.EncryptedSessions.Cache
 
         public EncryptedDistributedCache(IDistributedCache cache, ISignatureHelper signatureHelper, IAesCryptoService aesCryptoService, IOptions<AesCryptoConfig> config)
         {
-            _cache = cache;
-            _signatureHelper = signatureHelper;
-            _aesCryptoService = aesCryptoService;
-            _aesKeysConfig = config.Value;
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _signatureHelper = signatureHelper ?? throw new ArgumentNullException(nameof(signatureHelper));
+            _aesCryptoService = aesCryptoService ?? throw new ArgumentNullException(nameof(aesCryptoService));
+            _aesKeysConfig = config.Value ?? throw new ArgumentNullException(nameof(config));
         }
 
         public async Task<byte[]> GetAsync(string key, CancellationToken token = default)
