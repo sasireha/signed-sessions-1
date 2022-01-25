@@ -11,13 +11,7 @@ namespace HealthAngels.EncryptedSessions.AesCrypto
         // add (= Additional Authenticated Data) can be nil
         public byte[] EncryptAESGCM(byte[] plainText, byte[] key, byte[] nonce, byte[] tag, byte[] associatedData = null)
         {
-            if (plainText == null || plainText.Length == 0) { return null; }
-
-            if (tag == null || tag.Length > 16 || tag.Length < 12 || nonce == null || tag.Length != 16) { return null; }
-
-            if (nonce == null || nonce.Length != 12) { return null; }
-
-            if (key == null || key.Length != 32) { return null; }
+            if (!ValidateInput(plainText, key, nonce, tag)) { return null; }
 
             byte[] cipherText = new byte[plainText.Length];
             using var cipher = new AesGcm(key);
@@ -27,13 +21,7 @@ namespace HealthAngels.EncryptedSessions.AesCrypto
 
         public byte[] DecryptAESGCM(byte[] cipherText, byte[] key, byte[] nonce, byte[] tag, byte[] associatedData = null)
         {
-            if (cipherText == null || cipherText.Length == 0) { return null; }
-
-            if (tag == null || tag.Length > 16 || tag.Length < 12 || nonce == null || tag.Length != 16) { return null; }
-
-            if (nonce == null || nonce.Length != 12) { return null; }
-
-            if (key == null || key.Length != 32) { return null; }
+            if (!ValidateInput(cipherText, key, nonce, tag)) { return null; }
 
             byte[] plainText = new byte[cipherText.Length];
             using var cipher = new AesGcm(key);
@@ -41,7 +29,7 @@ namespace HealthAngels.EncryptedSessions.AesCrypto
             return plainText;
         }
 
-        public AesCryptoData GetAesCryptoData(byte[] data, byte[] nonce, byte[] tag)
+        public AesCryptoData MakeAesCryptoData(byte[] data, byte[] nonce, byte[] tag)
         {
             return new AesCryptoData()
             {
@@ -49,6 +37,19 @@ namespace HealthAngels.EncryptedSessions.AesCrypto
                 Nonce = Convert.ToBase64String(nonce),
                 Tag = Convert.ToBase64String(tag)
             };
+        }
+
+        private bool ValidateInput(byte[] text, byte[] key, byte[] nonce, byte[] tag)
+        {
+            if (text == null || text.Length == 0) { return false; }
+
+            if (tag == null || tag.Length > 16 || tag.Length < 12 || nonce == null || tag.Length != 16) { return false; }
+
+            if (nonce == null || nonce.Length != 12) { return false; }
+
+            if (key == null || key.Length != 32) { return false; }
+
+            return true;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using HealthAngels.EncryptedSessions.AesCrypto;
 using HealthAngels.EncryptedSessions.Cache;
 using HealthAngels.EncryptedSessions.Session;
-using HealthAngels.EncryptedSessions.Signature;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +33,6 @@ namespace HealthAngels.EncryptedSessions
         private static void ConfigureDependencies(IServiceCollection services)
         {
             services.AddSingleton<IEncryptedDistributedCache,EncryptedDistributedCache>();
-            services.AddSingleton<ISignatureHelper, SignatureHelper>();
             services.AddTransient<ISessionStore, EncryptedSessionStore>();
             services.AddTransient<IAesCryptoService, AesCryptoService>();
         }

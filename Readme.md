@@ -15,14 +15,6 @@ cypherData is AES256 encrypted and then base64 encoded into a string. The nonce 
 {\"CypherData\":\"1Zfszq8CnWEqrg==\",\"Nonce\":\"V4wB4KBhNPz1pU50\",\"Tag\":\"JbJhOGJhD798KM3q8MrCeA==\"}
 ```
 
-###Previous Version Support:
-
-The older versions of this package appends a signature to the data and store's it in the cache.
-
-```data.signature```
-
-The current version of this package supports reading the signed data, but it does not support to sign and store the data anymore. Instead it will encrypt it.
-
 ###Installation
 
 1) Add the package to the Project
@@ -31,19 +23,14 @@ The current version of this package supports reading the signed data, but it doe
 
 2) Add the configuration dependencies in the startup
 
-SignatureSecrets are used for reading signed data.
 AesCryptoConfig contains the key used for encryting the data.
 
 ```
-services.Configure<SignatureSecrets>(Configuration.GetSection(nameof(SignatureSecrets)))
-        .Configure<AesCryptoConfig>(Configuration.GetSection(nameof(AesCryptoConfig)));
+services.Configure<AesCryptoConfig>(Configuration.GetSection(nameof(AesCryptoConfig)));
 ```
 
 ```
 Config.yaml
-
-SignatureSecrets:
-  HmacSecretKey: "some guid"  
 
 AesCryptoConfig:
   AesEncryptionKey: "256 bit (=32 byte) AES key"

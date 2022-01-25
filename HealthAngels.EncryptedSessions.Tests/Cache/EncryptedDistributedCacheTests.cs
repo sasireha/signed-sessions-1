@@ -1,6 +1,5 @@
 ﻿using HealthAngels.EncryptedSessions.AesCrypto;
 using HealthAngels.EncryptedSessions.Cache;
-using HealthAngels.EncryptedSessions.Signature;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -15,19 +14,13 @@ namespace HealthAngels.EncryptedSessions.Tests.Cache
     public class EncryptedDistributedCacheTests
     {
         private readonly Mock<IDistributedCache> _baseCacheMock;
-        private readonly Mock<ISignatureHelper> _signatureHelper;
         private readonly IAesCryptoService _aesCryptoService;
         private readonly Mock<IOptions<AesCryptoConfig>> _config;
 
         private readonly EncryptedDistributedCache _encryptedDistributedCache;
         private string _key = Guid.NewGuid().ToString();
 
-        //Signature
-        private const string UnsignedValue = "dGVzdHZhbHVl"; // must be base64 encoded
-        private const string Signature = "tCSsoVusDeFis9E5QEtDXSsoOrnqiPQeheDXkkVkQv0="; // must be base64 encoded
         private DistributedCacheEntryOptions _distributedCacheEntryOptions = new DistributedCacheEntryOptions();
-        private byte[] _cachedValue = Encoding.UTF8.GetBytes("test session data");
-        private byte[] _signedData = Encoding.UTF8.GetBytes(UnsignedValue + "." + Signature);
 
         //Encryption
         private byte[] _decryptedValue = Encoding.UTF8.GetBytes("teststring");
@@ -37,40 +30,12 @@ namespace HealthAngels.EncryptedSessions.Tests.Cache
         public EncryptedDistributedCacheTests()
         {
             _baseCacheMock = new Mock<IDistributedCache>();
-            _signatureHelper = new Mock<ISignatureHelper>();
             _aesCryptoService = new AesCryptoService();
             _config = new Mock<IOptions<AesCryptoConfig>>();
             _config.Setup(m => m.Value).Returns(new AesCryptoConfig() { AesEncryptionKey = "keykeykeykeykeykeykeykeykeykeyke" });
-            _encryptedDistributedCache = new EncryptedDistributedCache(_baseCacheMock.Object, _signatureHelper.Object, _aesCryptoService, _config.Object);
+            _encryptedDistributedCache = new EncryptedDistributedCache(_baseCacheMock.Object, _aesCryptoService, _config.Object);
         }
 
-        [Fact]
-        public async Task GetDataFromRedis_WhenSignatureIsValid_ReturnsData()
-        {
-            //Arrange
-            _baseCacheMock.Setup(m => m.GetAsync(_key, default)).ReturnsAsync(_signedData);
-            _signatureHelper.Setup(m => m.VerifySignature(UnsignedValue, Signature)).Returns(true);
-
-            //Act
-            var result = await _encryptedDistributedCache.GetAsync(_key);
-
-            // Assert
-            Assert.Equal(Convert.FromBase64String(UnsignedValue), result);
-        }
-
-        [Fact]
-        public void GetDataFromRedis_WhenSignatureIsInValid_ThrowsException()
-        {   
-            //Arrange
-            _baseCacheMock.Setup(m => m.GetAsync(_key, default)).ReturnsAsync(_signedData);
-            _signatureHelper.Setup(m => m.VerifySignature(UnsignedValue, Signature)).Returns(false);
-
-            //Act
-            Exception exception = Assert.ThrowsAsync<Exception>(async () => await _encryptedDistributedCache.GetAsync(_key)).Result;
-
-            // Assert
-            Assert.Equal("Session Signature is invalid", exception.Message);
-        }
 
         [Fact]
         public async Task GetDataFromRedis_WithValidKey_ReturnsDecryptedData()
@@ -101,16 +66,16 @@ namespace HealthAngels.EncryptedSessions.Tests.Cache
         [Fact]
         public async Task GetDataFromRedis_WhenDataIsEmpty()
         {
-            _cachedValue = null;
+            byte[] cachedValue = null;
 
             //Arrange
-            _baseCacheMock.Setup(m => m.GetAsync(_key, default)).ReturnsAsync(_cachedValue);
+            _baseCacheMock.Setup(m => m.GetAsync(_key, default)).ReturnsAsync(cachedValue);
 
             //Act
             var result = await _encryptedDistributedCache.GetAsync(_key);
 
             // Assert
-            Assert.Equal(_cachedValue, result);
+            Assert.Equal(cachedValue, result);
         }
 
         [Fact]
@@ -184,8 +149,10 @@ namespace HealthAngels.EncryptedSessions.Tests.Cache
         [Fact]
         public void SetDataInRedis()
         {
+            var value = Encoding.UTF8.GetBytes("some data");
+
             //Act
-            var exception = Assert.Throws<NotImplementedException>(() => _encryptedDistributedCache.Set(_key, _cachedValue, _distributedCacheEntryOptions));
+            var exception = Assert.Throws<NotImplementedException>(() => _encryptedDistributedCache.Set(_key, value, _distributedCacheEntryOptions));
             //Assert
             Assert.IsType<NotImplementedException>(exception);
         }

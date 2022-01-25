@@ -1,9 +1,7 @@
 ﻿using HealthAngels.EncryptedSessions.AesCrypto;
-using HealthAngels.EncryptedSessions.Signature;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -15,14 +13,12 @@ namespace HealthAngels.EncryptedSessions.Cache
     public class EncryptedDistributedCache : IEncryptedDistributedCache
     {
         private readonly IDistributedCache _cache;
-        private readonly ISignatureHelper _signatureHelper;
         private readonly IAesCryptoService _aesCryptoService;
         private readonly AesCryptoConfig _aesKeysConfig;
 
-        public EncryptedDistributedCache(IDistributedCache cache, ISignatureHelper signatureHelper, IAesCryptoService aesCryptoService, IOptions<AesCryptoConfig> config)
+        public EncryptedDistributedCache(IDistributedCache cache, IAesCryptoService aesCryptoService, IOptions<AesCryptoConfig> config)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-            _signatureHelper = signatureHelper ?? throw new ArgumentNullException(nameof(signatureHelper));
             _aesCryptoService = aesCryptoService ?? throw new ArgumentNullException(nameof(aesCryptoService));
             _aesKeysConfig = config.Value ?? throw new ArgumentNullException(nameof(config));
         }
@@ -30,34 +26,17 @@ namespace HealthAngels.EncryptedSessions.Cache
         public async Task<byte[]> GetAsync(string key, CancellationToken token = default)
         {
             var value = await _cache.GetStringAsync(key, token);
+
             if (string.IsNullOrWhiteSpace(value))
             {
                 return null;
             }
 
-            if (value.Contains("."))
-            {
-                var signedValue = value.Split(".");
-                var unsignedEncodedValue = signedValue.First();
-                var signature = signedValue.Last();
-
-                var signatureIsValid = _signatureHelper.VerifySignature(unsignedEncodedValue, signature);
-
-                if (!signatureIsValid)
-                {
-                    throw new Exception("Session Signature is invalid");
-                }
-
-                return Convert.FromBase64String(unsignedEncodedValue);
-            }
-            else
-            {
-                var deserializedString = JsonSerializer.Deserialize<AesCryptoData>(value);
-                var cypherData = Convert.FromBase64String(deserializedString.CypherData);
-                var nonce = Convert.FromBase64String(deserializedString.Nonce);
-                var tag = Convert.FromBase64String(deserializedString.Tag);
-                return _aesCryptoService.DecryptAESGCM(cypherData, Encoding.UTF8.GetBytes(_aesKeysConfig.AesEncryptionKey), nonce, tag);
-            }
+            var deserializedString = JsonSerializer.Deserialize<AesCryptoData>(value);
+            var cypherData = Convert.FromBase64String(deserializedString.CypherData);
+            var nonce = Convert.FromBase64String(deserializedString.Nonce);
+            var tag = Convert.FromBase64String(deserializedString.Tag);
+            return _aesCryptoService.DecryptAESGCM(cypherData, Encoding.UTF8.GetBytes(_aesKeysConfig.AesEncryptionKey), nonce, tag);
         }
 
         public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default)
@@ -72,8 +51,8 @@ namespace HealthAngels.EncryptedSessions.Cache
             var tagBytes = new byte[16];
             RandomNumberGenerator.Fill(nonce);
             var cypherText = _aesCryptoService.EncryptAESGCM(value, Encoding.UTF8.GetBytes(_aesKeysConfig.AesEncryptionKey), nonce, tagBytes);
-            var encryptedValue = _aesCryptoService.GetAesCryptoData(cypherText, nonce, tagBytes);
-            string serializedValue = JsonSerializer.Serialize(encryptedValue);
+            var aesCryptoData = _aesCryptoService.MakeAesCryptoData(cypherText, nonce, tagBytes);
+            string serializedValue = JsonSerializer.Serialize(aesCryptoData);
             await _cache.SetStringAsync(key, serializedValue, options, token);
         }
 
