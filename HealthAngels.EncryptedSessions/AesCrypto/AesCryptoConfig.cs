@@ -1,7 +1,7 @@
 ﻿namespace HealthAngels.EncryptedSessions.AesCrypto
 {
-    public class AesCryptoConfig
+    public record AesCryptoConfig
     {
-        public string AesEncryptionKey { get; set; }
+        public string AesEncryptionKey { get; init; }
     }
 }
