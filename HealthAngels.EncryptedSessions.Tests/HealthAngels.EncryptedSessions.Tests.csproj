@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HealthAngels.SignedSessions\HealthAngels.SignedSessions.csproj" />
+      <ProjectReference Include="..\HealthAngels.EncryptedSessions\HealthAngels.EncryptedSessions.csproj" />
     </ItemGroup>
 
 </Project>

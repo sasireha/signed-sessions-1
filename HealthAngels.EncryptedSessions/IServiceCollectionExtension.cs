@@ -1,19 +1,16 @@
-﻿using System;
-using HealthAngels.SignedSessions.Cache;
-using HealthAngels.SignedSessions.Helpers;
+﻿using HealthAngels.EncryptedSessions.AesCrypto;
+using HealthAngels.EncryptedSessions.Cache;
+using HealthAngels.EncryptedSessions.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.DependencyInjection;
-using HealthAngels.SignedSessions.Session;
 
-namespace HealthAngels.SignedSessions
+namespace HealthAngels.EncryptedSessions
 {
     public static class IServiceCollectionExtension
     {
-        public static IServiceCollection AddSignedSessions(this IServiceCollection services, Action<SignatureSecrets> signatureSecrets)
-        {
-            services.Configure(signatureSecrets);
-            
+        public static IServiceCollection AddEncryptedSessions(this IServiceCollection services)
+        {            
             ConfigureDependencies(services);
         
             services.AddSession(options =>
@@ -35,9 +32,9 @@ namespace HealthAngels.SignedSessions
 
         private static void ConfigureDependencies(IServiceCollection services)
         {
-            services.AddSingleton<ISignedDistributedCache,SignedDistributedCache>();
-            services.AddSingleton<ISignatureHelper, SignatureHelper>();
-            services.AddTransient<ISessionStore, SignedSessionStore>();
+            services.AddSingleton<IEncryptedDistributedCache,EncryptedDistributedCache>();
+            services.AddTransient<ISessionStore, EncryptedSessionStore>();
+            services.AddTransient<IAesCryptoService, AesCryptoService>();
         }
     }
 }

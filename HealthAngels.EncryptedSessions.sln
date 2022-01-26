@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthAngels.EncryptedSessions", "HealthAngels.EncryptedSessions\HealthAngels.EncryptedSessions.csproj", "{129D9E80-4554-4CE2-8754-E48A22893FAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthAngels.EncryptedSessions.Tests", "HealthAngels.EncryptedSessions.Tests\HealthAngels.EncryptedSessions.Tests.csproj", "{8B298430-44AC-4565-B147-CA36AE930369}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{129D9E80-4554-4CE2-8754-E48A22893FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129D9E80-4554-4CE2-8754-E48A22893FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129D9E80-4554-4CE2-8754-E48A22893FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129D9E80-4554-4CE2-8754-E48A22893FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B298430-44AC-4565-B147-CA36AE930369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B298430-44AC-4565-B147-CA36AE930369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B298430-44AC-4565-B147-CA36AE930369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B298430-44AC-4565-B147-CA36AE930369}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9E7F380-4E2A-4A8D-871A-8FDA003B660D}
+	EndGlobalSection
+EndGlobal

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 
-namespace HealthAngels.SignedSessions.Helpers
+namespace HealthAngels.EncryptedSessions.Session
 {
       /// <summary>
     /// Class for accessing the HTTP <see cref="ISession"/> in other classes besides the <see cref="ControllerBase"/>.

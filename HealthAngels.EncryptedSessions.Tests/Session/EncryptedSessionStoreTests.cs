@@ -1,23 +1,22 @@
-﻿using System;
-using HealthAngels.SignedSessions.Cache;
+﻿using HealthAngels.EncryptedSessions.Cache;
+using HealthAngels.EncryptedSessions.Session;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Moq;
-using HealthAngels.SignedSessions.Session;
+using System;
 using Xunit;
 
-namespace HealthAngels.SignedSessions.Tests.Session
+namespace HealthAngels.EncryptedSessions.Tests.Session
 {
-    public class SignedSessionStoreTests
+    public class EncryptedSessionStoreTests
     {
-        private readonly SignedSessionStore _signedSessionStore;
+        private readonly EncryptedSessionStore _encryptedSessionStore;
 
-        public SignedSessionStoreTests()
+        public EncryptedSessionStoreTests()
         {
-            var mockSignedDistributedCache = new Mock<ISignedDistributedCache>();
+            var mockEncryptedDistributedCache = new Mock<IEncryptedDistributedCache>();
             var mockLoggerFactory = new Mock<ILoggerFactory>();
-            _signedSessionStore = new SignedSessionStore(mockSignedDistributedCache.Object, mockLoggerFactory.Object);
+            _encryptedSessionStore = new EncryptedSessionStore(mockEncryptedDistributedCache.Object, mockLoggerFactory.Object);
         }
 
         [Fact]
@@ -31,10 +30,10 @@ namespace HealthAngels.SignedSessions.Tests.Session
             bool isNewSessionKey = true;
 
             //Act
-            ISession result = _signedSessionStore.Create(sessionKey, idleTimeout, ioTimeout, tryEstablishSession, isNewSessionKey);
+            ISession result = _encryptedSessionStore.Create(sessionKey, idleTimeout, ioTimeout, tryEstablishSession, isNewSessionKey);
 
             //Assert
-            Assert.IsType<SignedDistributedSession>(result);
+            Assert.IsType<EncryptedDistributedSession>(result);
         }
 
         [Fact]
@@ -48,7 +47,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
             bool isNewSessionKey = true;
 
             //Act
-            var exception = Assert.Throws<ArgumentNullException>(() => _signedSessionStore.Create(sessionKey, idleTimeout, ioTimeout, tryEstablishSession, isNewSessionKey));
+            var exception = Assert.Throws<ArgumentNullException>(() => _encryptedSessionStore.Create(sessionKey, idleTimeout, ioTimeout, tryEstablishSession, isNewSessionKey));
 
             //Assert
             Assert.IsType<ArgumentNullException>(exception);
@@ -65,7 +64,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
             bool isNewSessionKey = true;
 
             //Act
-            var exception = Assert.Throws<ArgumentNullException>(() => _signedSessionStore.Create(sessionKey, idleTimeout, ioTimeout, tryEstablishSession, isNewSessionKey));
+            var exception = Assert.Throws<ArgumentNullException>(() => _encryptedSessionStore.Create(sessionKey, idleTimeout, ioTimeout, tryEstablishSession, isNewSessionKey));
 
             //Assert
             Assert.IsType<ArgumentNullException>(exception);

@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HealthAngels.EncryptedSessions.Session;
 using Microsoft.AspNetCore.Http;
 using Moq;
-using HealthAngels.SignedSessions.Helpers;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace HealthAngels.SignedSessions.Tests.Helpers
+namespace HealthAngels.EncryptedSessions.Tests.Session
 {
     public class SessionAccessorTests
     {

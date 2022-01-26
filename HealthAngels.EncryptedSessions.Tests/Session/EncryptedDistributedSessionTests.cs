@@ -1,15 +1,15 @@
-﻿using System;
+﻿using HealthAngels.EncryptedSessions.Session;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Moq;
-using HealthAngels.SignedSessions.Session;
+using System;
 using Xunit;
 
-namespace HealthAngels.SignedSessions.Tests.Session
+namespace HealthAngels.EncryptedSessions.Tests.Session
 {
-    public class SignedDistributedSessionTests
+    public class EncryptedDistributedSessionTests
     {        
-        private SignedDistributedSession _signedDistributedSession;
+        private EncryptedDistributedSession _encryptedDistributedSession;
         private Mock<IDistributedCache> _cacheMock;
         private Mock<ILoggerFactory> _logger;
         private string sessionKey = Guid.NewGuid().ToString();
@@ -17,11 +17,11 @@ namespace HealthAngels.SignedSessions.Tests.Session
         private TimeSpan ioTimeout = new TimeSpan(1200);
         private Func<bool> tryEstablishSession = () => true;
         private bool isNewSessionKey = true;
-        public SignedDistributedSessionTests()
+        public EncryptedDistributedSessionTests()
         {
             _logger = new Mock<ILoggerFactory>();
             _cacheMock = new Mock<IDistributedCache>();
-            _signedDistributedSession = new SignedDistributedSession(_cacheMock.Object, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, _logger.Object, isNewSessionKey);
+            _encryptedDistributedSession = new EncryptedDistributedSession(_cacheMock.Object, sessionKey, idleTimeout, ioTimeout, tryEstablishSession, _logger.Object, isNewSessionKey);
         }
 
 
@@ -29,7 +29,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public void Remove_WhenSessionIsNotLoadedAsynchronously_ThrowsException()
         {
             //Act
-            var exception = Assert.Throws<Exception>(() => _signedDistributedSession.Remove(sessionKey));
+            var exception = Assert.Throws<Exception>(() => _encryptedDistributedSession.Remove(sessionKey));
             //Assert
             Assert.Equal("Session was not loaded asynchronously", exception.Message);
         }
@@ -39,7 +39,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         {
             byte[] value = System.Text.Encoding.UTF8.GetBytes("testvalue");
             //Act
-            var exception = Assert.Throws<Exception>(() => _signedDistributedSession.Set(sessionKey, value));
+            var exception = Assert.Throws<Exception>(() => _encryptedDistributedSession.Set(sessionKey, value));
             //Assert
             Assert.Equal("Session was not loaded asynchronously", exception.Message);
         }
@@ -48,7 +48,7 @@ namespace HealthAngels.SignedSessions.Tests.Session
         public void TryGetValue_WhenSessionIsNotLoadedAsynchronously_ThrowsException()
         {
             //Act
-            var exception = Assert.Throws<Exception>(() => _signedDistributedSession.TryGetValue(sessionKey, out byte[] value));
+            var exception = Assert.Throws<Exception>(() => _encryptedDistributedSession.TryGetValue(sessionKey, out byte[] value));
             //Assert
             Assert.Equal("Session was not loaded asynchronously", exception.Message);
         }
@@ -58,11 +58,11 @@ namespace HealthAngels.SignedSessions.Tests.Session
         {
             byte[] value = System.Text.Encoding.UTF8.GetBytes("testvalue");
             //Arrange
-            _signedDistributedSession.LoadAsync(default);
-            _signedDistributedSession.Set(sessionKey, value);
+            _encryptedDistributedSession.LoadAsync(default);
+            _encryptedDistributedSession.Set(sessionKey, value);
 
             //Act
-            _signedDistributedSession.TryGetValue(sessionKey, out byte[] result);
+            _encryptedDistributedSession.TryGetValue(sessionKey, out byte[] result);
 
             //Assert
             Assert.Equal(value, result);
