@@ -1,0 +1,14 @@
+version: 2
+updates:
+
+  # Maintain dependencies for NuGet
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "Microsoft.Extensions*"
+        versions: ["6.x"]
+    assignees:
+      - "sasireha"
+    open-pull-requests-limit: 10
