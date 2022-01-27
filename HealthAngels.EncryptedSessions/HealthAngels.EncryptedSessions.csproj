@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageId>HealthAngels.EncryptedSessions</PackageId>
-    <Product>HealthAngels.EncryptedSessions</Product>
-    <Authors>Health Angels</Authors>
+    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <PackageId>Test.EncryptedSessions</PackageId>
+    <Product>Test.EncryptedSessions</Product>
+    <Authors>Test</Authors>
     <StartupObject />
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <Description>This package will encrypt the session data using AES256 algorithm and store it in a distributed cache</Description>
+    <Version>1.0.18</Version>
   </PropertyGroup>
 
   <ItemGroup>

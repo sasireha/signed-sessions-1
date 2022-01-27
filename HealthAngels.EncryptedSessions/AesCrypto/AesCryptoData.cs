@@ -1,9 +1,9 @@
 ﻿namespace HealthAngels.EncryptedSessions.AesCrypto
 {
-    public record AesCryptoData
+    public class AesCryptoData
     {
-        public string CypherData { get; init; }
-        public string Nonce { get; init; }
-        public string Tag { get; init; }
+        public string CypherData { get; set; }
+        public string Nonce { get; set; }
+        public string Tag { get; set; }
     }
 }
