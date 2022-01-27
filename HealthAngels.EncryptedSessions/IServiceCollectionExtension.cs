@@ -4,13 +4,16 @@ using HealthAngels.EncryptedSessions.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HealthAngels.EncryptedSessions
 {
     public static class IServiceCollectionExtension
     {
-        public static IServiceCollection AddEncryptedSessions(this IServiceCollection services)
-        {            
+        public static IServiceCollection AddEncryptedSessions(this IServiceCollection services, Action<AesCryptoConfig> aesCryptoConfig)
+        {
+            services.Configure(aesCryptoConfig);
+
             ConfigureDependencies(services);
         
             services.AddSession(options =>
