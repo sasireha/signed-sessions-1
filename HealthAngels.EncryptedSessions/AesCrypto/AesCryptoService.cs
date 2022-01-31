@@ -31,12 +31,7 @@ namespace HealthAngels.EncryptedSessions.AesCrypto
 
         public AesCryptoData MakeAesCryptoData(byte[] data, byte[] nonce, byte[] tag)
         {
-            return new AesCryptoData()
-            {
-                CypherData = Convert.ToBase64String(data),
-                Nonce = Convert.ToBase64String(nonce),
-                Tag = Convert.ToBase64String(tag)
-            };
+            return new AesCryptoData(Convert.ToBase64String(data), Convert.ToBase64String(nonce), Convert.ToBase64String(tag));
         }
 
         private bool ValidateInput(byte[] text, byte[] key, byte[] nonce, byte[] tag)

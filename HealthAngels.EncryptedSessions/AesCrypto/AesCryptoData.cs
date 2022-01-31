@@ -2,8 +2,14 @@
 {
     public class AesCryptoData
     {
-        public string CypherData { get; set; }
-        public string Nonce { get; set; }
-        public string Tag { get; set; }
+        public AesCryptoData(string cypherdata, string nonce, string tag)
+        {
+            CypherData = cypherdata;
+            Nonce = nonce;
+            Tag = tag;
+        }
+        public string CypherData { get; }
+        public string Nonce { get; }
+        public string Tag { get; }
     }
 }

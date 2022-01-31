@@ -14,13 +14,14 @@ namespace HealthAngels.EncryptedSessions.Cache
     {
         private readonly IDistributedCache _cache;
         private readonly IAesCryptoService _aesCryptoService;
-        private readonly AesCryptoConfig _aesKeysConfig;
+        private readonly AesCryptoConfig _aesCryptoConfig;
 
         public EncryptedDistributedCache(IDistributedCache cache, IAesCryptoService aesCryptoService, IOptions<AesCryptoConfig> config)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _aesCryptoService = aesCryptoService ?? throw new ArgumentNullException(nameof(aesCryptoService));
-            _aesKeysConfig = config.Value ?? throw new ArgumentNullException(nameof(config));
+            _aesCryptoConfig = config.Value ?? throw new ArgumentNullException(nameof(config));
+
         }
 
         public async Task<byte[]> GetAsync(string key, CancellationToken token = default)
@@ -36,7 +37,7 @@ namespace HealthAngels.EncryptedSessions.Cache
             var cypherData = Convert.FromBase64String(deserializedString.CypherData);
             var nonce = Convert.FromBase64String(deserializedString.Nonce);
             var tag = Convert.FromBase64String(deserializedString.Tag);
-            return _aesCryptoService.DecryptAESGCM(cypherData, Encoding.UTF8.GetBytes(_aesKeysConfig.AesEncryptionKey), nonce, tag);
+            return _aesCryptoService.DecryptAESGCM(cypherData, Encoding.UTF8.GetBytes(_aesCryptoConfig.AesEncryptionKey), nonce, tag);
         }
 
         public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default)
@@ -50,7 +51,7 @@ namespace HealthAngels.EncryptedSessions.Cache
             var nonce = new byte[12]; // must be 12 bytes
             var tagBytes = new byte[16];
             RandomNumberGenerator.Fill(nonce);
-            var cypherText = _aesCryptoService.EncryptAESGCM(value, Encoding.UTF8.GetBytes(_aesKeysConfig.AesEncryptionKey), nonce, tagBytes);
+            var cypherText = _aesCryptoService.EncryptAESGCM(value, Encoding.UTF8.GetBytes(_aesCryptoConfig.AesEncryptionKey), nonce, tagBytes);
             var aesCryptoData = _aesCryptoService.MakeAesCryptoData(cypherText, nonce, tagBytes);
             string serializedValue = JsonSerializer.Serialize(aesCryptoData);
             await _cache.SetStringAsync(key, serializedValue, options, token);
