@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,7 +37,7 @@ namespace HealthAngels.EncryptedSessions.Cache
             var cypherData = Convert.FromBase64String(deserializedString.CypherData);
             var nonce = Convert.FromBase64String(deserializedString.Nonce);
             var tag = Convert.FromBase64String(deserializedString.Tag);
-            return _aesCryptoService.DecryptAESGCM(cypherData, Encoding.UTF8.GetBytes(_aesCryptoConfig.AesEncryptionKey), nonce, tag);
+            return _aesCryptoService.DecryptAESGCM(cypherData, HextoBytes(_aesCryptoConfig.AesEncryptionKey), nonce, tag);
         }
 
         public async Task SetAsync(string key, byte[] value, DistributedCacheEntryOptions options, CancellationToken token = default)
@@ -51,7 +51,7 @@ namespace HealthAngels.EncryptedSessions.Cache
             var nonce = new byte[12]; // must be 12 bytes
             var tagBytes = new byte[16];
             RandomNumberGenerator.Fill(nonce);
-            var cypherText = _aesCryptoService.EncryptAESGCM(value, Encoding.UTF8.GetBytes(_aesCryptoConfig.AesEncryptionKey), nonce, tagBytes);
+            var cypherText = _aesCryptoService.EncryptAESGCM(value, HextoBytes(_aesCryptoConfig.AesEncryptionKey), nonce, tagBytes);
             var aesCryptoData = _aesCryptoService.MakeAesCryptoData(cypherText, nonce, tagBytes);
             string serializedValue = JsonSerializer.Serialize(aesCryptoData);
             await _cache.SetStringAsync(key, serializedValue, options, token);
@@ -84,6 +84,14 @@ namespace HealthAngels.EncryptedSessions.Cache
         public void Set(string key, byte[] value, DistributedCacheEntryOptions options)
         {
             throw new NotImplementedException();
+        }
+
+        private static byte[] HextoBytes(string InputText)
+        {
+            return Enumerable.Range(0, InputText.Length)
+                            .Where(x => x % 2 == 0)
+                            .Select(x => Convert.ToByte(InputText.Substring(x, 2), 16))
+                            .ToArray();
         }
     }
 }

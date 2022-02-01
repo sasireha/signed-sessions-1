@@ -32,7 +32,7 @@ namespace HealthAngels.EncryptedSessions.Tests.Cache
             _baseCacheMock = new Mock<IDistributedCache>();
             _aesCryptoService = new AesCryptoService();
             _config = new Mock<IOptions<AesCryptoConfig>>();
-            _config.Setup(m => m.Value).Returns(new AesCryptoConfig() { AesEncryptionKey = "keykeykeykeykeykeykeykeykeykeyke" });
+            _config.Setup(m => m.Value).Returns(new AesCryptoConfig() { AesEncryptionKey = "6b65796b65796b65796b65796b65796b65796b65796b65796b65796b65796b65" });
             _encryptedDistributedCache = new EncryptedDistributedCache(_baseCacheMock.Object, _aesCryptoService, _config.Object);
         }
 
